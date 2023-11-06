@@ -6,6 +6,8 @@ recognizer = sr.Recognizer()
 engine = pyttsx3.init(driverName='espeak',debug=True)
 engine.setProperty('voice', 'es')
 
+p = pyaudio.PyAudio()
+
 # Enumera los dispositivos de salida disponibles
 for i in range(p.get_device_count()):
     device_info = p.get_device_info_by_index(i)
