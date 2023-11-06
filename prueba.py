@@ -2,7 +2,7 @@ import speech_recognition as sr
 import pyttsx3
 
 recognizer = sr.Recognizer()
-engine = pyttsx3.init()
+engine = pyttsx3.init(driverName='espeak')
 
 with sr.Microphone() as source:
     print("Habla algo...")
@@ -13,7 +13,7 @@ try:
     print("Has dicho: " + text)
 
     if 'hola' in text:
-        engine.say("Buenos dias")
+        engine.say("Buenas noches")
         engine.runAndWait()
 
     # Guarda las palabras transcritas en un archivo de texto
