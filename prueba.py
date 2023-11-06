@@ -2,7 +2,7 @@ import speech_recognition as sr
 import pyttsx3
 
 recognizer = sr.Recognizer()
-engine = pyttsx3.init(driverName='espeak')
+engine = pyttsx3.init(driverName='espeak',debug=True)
 engine.setProperty('voice', 'es')
 
 with sr.Microphone() as source:
