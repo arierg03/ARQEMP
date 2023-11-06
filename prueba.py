@@ -32,7 +32,7 @@ try:
             else:
                 engine.say(response)
                 engine.runAndWait()
-            break
+            
     
 
     # Guarda las palabras transcritas en un archivo de texto
