@@ -3,6 +3,7 @@ import pyttsx3
 
 recognizer = sr.Recognizer()
 engine = pyttsx3.init(driverName='espeak')
+engine.setProperty('voice', 'es')
 
 with sr.Microphone() as source:
     print("Habla algo...")
