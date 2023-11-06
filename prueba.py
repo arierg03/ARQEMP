@@ -11,7 +11,7 @@ p = pyaudio.PyAudio()
 # Enumera los dispositivos de salida disponibles
 for i in range(p.get_device_count()):
     device_info = p.get_device_info_by_index(i)
-    if 'bcm2835 Headphones: - (hw:1,0-)' in device_info['name']:
+    if 'bcm2835 Headphones: - (hw:1,0)' in device_info['name']:
         output_device_index = device_info['index']
         break
 else:
