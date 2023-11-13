@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 import rospy
-from std_msgs.msg import String import BatteryStatus
+from std_msgs.msg import String, BatteryStatus
 
 def callback(data):
   rospy.loginfo("El nivel de la bateria es: " + data.level)
 def listener():
-  rospy.init_node(’listenerBateria’, anonymous=True)
+  rospy.init_node('listenerBateria', anonymous=True)
   rospy.Subscriber("/robot/battery_estimator/data", BatteryStatus, callback)
   # spin() simply keeps python from exiting until this node is stopped
   rospy.spin()
