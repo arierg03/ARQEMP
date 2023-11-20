@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import rospy
-from std_msgs.msg import String, BatteryStatus
+from robotnik_msgs.msg import String, BatteryStatus
 
 def callback(data):
   rospy.loginfo("El nivel de la bateria es: " + data.level)
