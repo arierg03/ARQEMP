@@ -1,18 +1,28 @@
 import speech_recognition as sr
 import pyttsx3
 import pyaudio
+import rospy
+from robotnik_msgs.msg import String, BatteryStatus
 
 recognizer = sr.Recognizer()
 engine = pyttsx3.init(driverName='espeak',debug=True)
 engine.setProperty('voice', 'es')
 engine.setProperty('volume', 1.0)
 
-def leeTemp():
-    return 'eooooo'
+def leeNivelBateria():
+    def callback(data):
+          mensaje = f"El nivel de la bateria es: {str(int(data.level))}"
+          rospy.loginfo(mensaje) 
+          rospy.signal_shutdown('Nivel de bateria recibido')
+          return mensaje
+    rospy.init_node('listenerBateria', anonymous=True)
+    rospy.Subscriber("/robot/battery_estimator/data", BatteryStatus, callback)
+    # spin() simply keeps python from exiting until this node is stopped
+    rospy.spin()
 
 keywords = {
     'hola': 'buenos dias',
-    'temperatura': leeTemp,
+    'nivel de bateria': leeNivelBateria,
 }
 
 with sr.Microphone() as source:
