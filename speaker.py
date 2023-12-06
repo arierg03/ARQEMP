@@ -14,13 +14,13 @@ engine.setProperty('volume', 1.0)
 def callback(data):
     rospy.loginfo("Recibido: %s", data.data)
     result = data.data
+    
     #Inicia la nueva reproduccion
     engine.say(result)
     engine.runAndWait()
-    #Publicamos el log
-    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    
+
     # Construir la línea de log con [fecha - hora] mensaje leído
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     log_line = f"[{now}] {result}"
     with open(logs_path, "a") as f:
         f.write(log_line + "\n")
