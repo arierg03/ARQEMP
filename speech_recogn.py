@@ -50,7 +50,7 @@ def leeTiempoRestanteBateria():
 def leeTiempoCargaBateria():
     def callback(data):
         global battery_time_charging
-        battery_time_charging = f"El tiempo restante de la bateria es: {str(int(data.time_charging))}"
+        battery_time_charging = f"El tiempo que lleva cargando es: {str(int(data.time_charging))} minutos"
         rospy.loginfo(battery_time_charging) 
         rospy.signal_shutdown('Tiempo de carga de bateria recibido')
     rospy.init_node('listenerTimeCharging', anonymous=True)
