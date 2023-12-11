@@ -32,8 +32,10 @@ def callback(data):
     
 
 def listener():
-    rospy.init_node('audio')
-    rospy.Subscriber('audio/say', String, callback)
+    rospy.init_node('audio', anonymous=True)
+    #Inicializamos el publicador para el tópico de logs
+    log_publisher = rospy.Publisher('/audio_say_logs', String, queue_size=10)
+    rospy.Subscriber('/audio_say', String, callback)
     rospy.spin()
 
     #Variante de .spin()
@@ -44,8 +46,6 @@ def listener():
 
 if __name__ == '__main__':
     try:
-        #Inicializamos el publicador para el tópico de logs
-        log_publisher = rospy.Publisher('audio/say_logs', String, queue_size=10)
         listener()
     except rospy.ROSInterruptException:
         pass
