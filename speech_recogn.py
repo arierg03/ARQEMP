@@ -9,7 +9,10 @@ from datetime import datetime
 
 #Variables globales necesarias
 logs_path = 'speech_recogn.txt'
-...
+nivel_bateria = None
+battery_time_remaining = None
+battery_time_charging = None
+
 
 #Declaramos el recognizer y el altavoz
 log_publisher = rospy.Publisher('audio/speech_recogn_logs', String, queue_size=10)
@@ -22,25 +25,39 @@ engine.setProperty('volume', 1.0)
 #Función que lee el nivel de la bateria
 def leeNivelBateria():
     def callback(data):
-        mensaje = f"El nivel de la bateria es: {str(int(data.level))}"
-        rospy.loginfo(mensaje) 
+        global nivel_bateria
+        nivel_bateria = f"El nivel de la bateria es: {str(int(data.level))}"
+        rospy.loginfo(nivel_bateria) 
         rospy.signal_shutdown('Nivel de bateria recibido')
-        return mensaje
     rospy.init_node('listenerBateria', anonymous=True)
     rospy.Subscriber("/robot/battery_estimator/data", BatteryStatus, callback)
     # spin() simply keeps python from exiting until this node is stopped
     rospy.spin()
+    return nivel_bateria
 #Función que lee cuanto queda de batería
 def leeTiempoRestanteBateria():
     def callback(data):
-        mensaje = f"El tiempo restante de la bateria es: {str(int(data.level))}"
-        rospy.loginfo(mensaje) 
-        rospy.signal_shutdown('Nivel de bateria recibido')
-        return mensaje
-    rospy.init_node('listenerBateria', anonymous=True)
+        global battery_time_remaining
+        battery_time_remaining = f"El tiempo restante de la bateria es: {str(int(data.time_remaining))}"
+        rospy.loginfo(battery_time_remaining) 
+        rospy.signal_shutdown('Tiempo de bateria restante recibido')
+    rospy.init_node('listenerTimeRemaining', anonymous=True)
     rospy.Subscriber("/robot/battery_estimator/data", BatteryStatus, callback)
     # spin() simply keeps python from exiting until this node is stopped
     rospy.spin()
+    return battery_time_remaining
+#Función que lee cuanto tiempo lleva de cargando
+def leeTiempoCargaBateria():
+    def callback(data):
+        global battery_time_charging
+        battery_time_charging = f"El tiempo restante de la bateria es: {str(int(data.time_charging))}"
+        rospy.loginfo(battery_time_charging) 
+        rospy.signal_shutdown('Tiempo de carga de bateria recibido')
+    rospy.init_node('listenerTimeCharging', anonymous=True)
+    rospy.Subscriber("/robot/battery_estimator/data", BatteryStatus, callback)
+    # spin() simply keeps python from exiting until this node is stopped
+    rospy.spin()
+    return battery_time_charging
 
 #Diccionario de palabras clave para detectar en el audio escuchado
 keywords = {
@@ -50,6 +67,8 @@ keywords = {
     'queda de batería': leeTiempoRestanteBateria,
     'tiempo restante de batería': leeTiempoRestanteBateria,
     'tiempo restante de la batería': leeTiempoRestanteBateria,
+    'tiempo de carga': leeTiempoCargaBateria,
+    'cuanto tiempo lleva cargando': leeTiempoCargaBateria,
 }
 
 while not rospy.is_shutdown():  # Bucle principal hasta que se reciba una señal de parada
